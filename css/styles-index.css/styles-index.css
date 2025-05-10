@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&family=Roboto:wght@400;700&display=swap');
+
+.navbar {
+    background-color: rgb(27, 20, 82);
+}
+
+.navbar .navbar-nav .nav-link {
+    color: white !important;
+}
+
+.white-icon {
+    filter: invert(1);
+  }
+  
+
+
+
+h1 {
+    font-family: Montserrat;
+    font-weight: 900 !important;
+}
+
+h6 {
+    font-family: Montserrat;
+    font-weight: 700 !important;
+}
+
+p {
+    font-family: Montserrat;
+    font-weight: 400;
+}
+
+a {
+    font-family: Montserrat;
+    font-weight: 400;
+}
+
+.contenedor {
+    display: inline-block;
+}
+
+#imagen {
+    transition: transform 0.3s, filter 0.3s;
+}
+
+#imagen:hover {
+    transform: scale(1.1);
+    filter:brightness(1);
+}
+
+.link-effect {
+    transition: transform 0.3s;
+    display: inline-block;
+}
+
+.link-effect:hover {
+    transform: scale(1.05);
+}
+
+/* Estilo para el logo en el footer */
+#footer-section #footer-logo {
+    width: 140px;
+    height: 140px;
+  }
+  

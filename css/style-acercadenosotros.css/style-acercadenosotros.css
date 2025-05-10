@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&family=Roboto:wght@400;700&display=swap');
+
+.navbar {
+    background-color: rgb(27, 20, 82);
+}
+
+.navbar .navbar-nav .nav-link {
+    color: white !important;
+}
+
+.team-member p {
+    text-align: center;
+  }
+  
+  .team-member h4 {
+    text-align: center;
+  }
+  
+  .team-member a {
+    text-align: center;
+    align-self: center;
+}
