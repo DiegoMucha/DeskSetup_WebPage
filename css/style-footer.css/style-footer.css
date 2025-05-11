@@ -5,6 +5,7 @@ ul {
 .footer-section {
   background: rgb(27,20,82);
   position: relative;
+  padding: 10px 0;
 }
 .footer-cta {
   border-bottom: 1px solid #373636;
@@ -157,3 +158,26 @@ ul {
   color: #878787;
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1; /* Hace que el contenido principal ocupe el espacio restante */
+}
+
+footer {
+    background: rgb(27, 20, 82); /* Color del fondo del footer */
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: auto; /* Empuja el footer al final */
+}
