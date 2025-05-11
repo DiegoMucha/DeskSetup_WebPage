@@ -1,0 +1,70 @@
+.icon-hover:hover {
+    border-color: #3b71ca !important;
+    background-color: white !important;
+    color: #3b71ca !important;
+}
+
+.icon-hover:hover i {
+    color: #3b71ca !important;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&family=Roboto:wght@400;700&display=swap');
+
+.navbar {
+    background-color: rgb(27, 20, 82);
+}
+
+.navbar .navbar-nav .nav-link {
+    color: white !important;
+}
+
+
+h1 {
+    font-family: Montserrat;
+    font-weight: 900 !important;
+}
+
+h4 {
+    font-family: Montserrat;
+    font-weight: 700 !important;
+}
+
+h3 {
+    font-family: Montserrat;
+    font-weight: 700 !important;
+}
+
+
+h6 {
+    font-family: Montserrat;
+    font-weight: 700 !important;
+}
+
+p {
+    font-family: Montserrat;
+    font-weight: 400;
+}
+
+a {
+    font-family: Montserrat;
+    font-weight: 400;
+}
+
+.contenedor {
+    display: inline-block;
+}
+
+
+.link-effect {
+    transition: transform 0.3s;
+    display: inline-block;
+}
+
+.link-effect:hover {
+    transform: scale(1.05);
+}
+
+.white-icon {
+    filter: invert(1);
+  }
+  

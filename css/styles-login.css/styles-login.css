@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&family=Roboto:wght@400;700&display=swap');
+
+
+
+.navbar {
+    background-color: rgb(27, 20, 82);
+}
+
+.navbar .navbar-nav .nav-link {
+    color: white !important;
+    
+}
+
+
+h1 {
+    font-family: Montserrat;
+    font-weight: 900 !important;
+}
+
+h2 {
+    font-family: Montserrat;
+    font-weight: 700 !important;
+}
+
+h6{
+    font-family: Montserrat;
+    font-weight: 700 !important; 
+}
+
+p{
+    font-family: Montserrat;
+    font-weight: 400;
+}
+
+a{
+    font-family: Montserrat;
+    font-weight: 400;
+}
+
+form{
+    font-family: Montserrat;
+    font-weight: 400;
+}
