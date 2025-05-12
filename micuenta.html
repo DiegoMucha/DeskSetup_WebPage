@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="e-commerce" content="DeskSetup Pro - Mi Cuenta">
+    <meta name="author" content="Grupo 2 - Rolling Code">
+
+    <title>Mi Cuenta - DeskSetup Pro</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Estilos generales -->
+    <link href="css/styles-index.css/styles-index.css" rel="stylesheet">
+    <!-- Estilos del footer -->
+    <link rel="stylesheet" href="css/style-footer.css/style-footer.css">
+    <!-- Estilos para la página Mi Cuenta -->
+    <link href="css/micuenta.css" rel="stylesheet">
+</head>
+
+<body>
+    <!--Nav Bar-->
+    <iframe src="navbar.html" width="100%" height="85" style="border:none; overflow:hidden;"></iframe>
+
+    <div class="container mt-5">
+        <h1 class="text-center">Editar Mi Cuenta</h1>
+        <form action="edit_user.php" method="POST" class="mt-4">
+            <input type="hidden" name="id">
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre y Apellido</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" required>
+            </div>
+            <div class="mb-3">
+                <label for="usuario" class="form-label">Nombre de Usuario</label>
+                <input type="text" class="form-control" id="usuario" name="usuario" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="direccion" class="form-label">Dirección</label>
+                <input type="text" class="form-control" id="direccion" name="direccion" required>
+            </div>
+            <div class="mb-3">
+                <label for="telefono" class="form-label">Teléfono</label>
+                <input type="tel" class="form-control" id="telefono" name="telefono" required>
+            </div>
+            <div class="mb-3">
+                <label for="codigo_postal" class="form-label">Código Postal</label>
+                <input type="text" class="form-control" id="codigo_postal" name="codigo_postal" required>
+            </div>
+            <button type="submit" class="btn btn-primary link-effect">Guardar Cambios</button>
+        </form>
+    </div>
+
+    <!-- FOOTER -->
+    <iframe src="footer.html" width="100%" height="130" style="border:none; overflow:hidden;"></iframe>
+</body>
+
+</html>

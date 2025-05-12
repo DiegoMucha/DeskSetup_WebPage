@@ -34,42 +34,42 @@
 <!---Registro-->
 <div class="container pb-3">
     <h1 class="mt-3">Registro</h1>
-    <form class="mt-3">
+    <form class="mt-3" action="register_user.php" method="POST">
         <div class="row g-3">
             <div class="col-md-6">
                 <label for="nombreInput" class="form-label">Nombre y Apellido</label>
-                <input type="text" class="form-control" id="nombreInput" required minlength="3" maxlength="50"
+                <input type="text" class="form-control" id="nombreInput" name="nombre" required minlength="3" maxlength="50"
                     placeholder="Debe contener entre 3 y 50 caracteres.">
             </div>
             <div class="col-md-6">
                 <label for="inputUsuario" class="form-label">Nombre de usuario</label>
-                <input type="text" class="form-control" id="inputUsuario" required minlength="3" maxlength="20"
+                <input type="text" class="form-control" id="inputUsuario" name="usuario" required minlength="3" maxlength="20"
                     placeholder="Debe contener entre 3 y 20 caracteres.">
             </div>
             <div class="col-12">
                 <label for="emailInput" class="form-label">Email</label>
-                <input type="email" class="form-control" id="emailInput" required
+                <input type="email" class="form-control" id="emailInput" name="email" required
                     pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
                     placeholder="Ingresa un email válido.">
             </div>
             <div class="col-md-6">
                 <label for="inputPass" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="inputPass" required minlength="6" maxlength="20"
+                <input type="password" class="form-control" id="inputPass" name="password" required minlength="6" maxlength="20"
                     placeholder="Debe contener entre 6 y 20 caracteres.">
             </div>
             <div class="col-md-6">
                 <label for="inputDirecc" class="form-label">Dirección</label>
-                <input type="text" class="form-control" id="inputDirecc" required minlength="10" maxlength="100"
+                <input type="text" class="form-control" id="inputDirecc" name="direccion" required minlength="10" maxlength="100"
                     placeholder="Debe contener entre 10 y 100 caracteres.">
             </div>
             <div class="col-md-6">
                 <label for="inputTelefono" class="form-label">Teléfono</label>
-                <input type="tel" class="form-control" id="inputTelefono" required pattern="[0-9]{10}"
+                <input type="tel" class="form-control" id="inputTelefono" name="telefono" required pattern="[0-9]{10}"
                     placeholder="Ingresa un número de teléfono válido .">
             </div>
             <div class="col-md-6">
                 <label for="inputCP" class="form-label">Código Postal</label>
-                <input type="number" class="form-control" id="inputCP" required min="1000" max="99999"
+                <input type="number" class="form-control" id="inputCP" name="codigo_postal" required min="1000" max="99999"
                     placeholder="Ingresa un código postal válido.">
             </div>
             <button class="btn btn-success">Registrarse</button>
