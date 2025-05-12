@@ -22,7 +22,7 @@
 
 <body>
     <!--Nav Bar-->
-    <iframe src="navbar.html" width="100%" height="85" style="border:none; overflow:hidden;"></iframe>
+    <iframe src="navbar.html" width="100%" height="56" style="border:none; position: fixed; top: 0; z-index: 1000;" scrolling="no"></iframe>
 
     <!--Carrusel-->
     <div class="d-flex justify-content-center mt-2">
@@ -71,17 +71,23 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Script para cargar productos dinámicamente -->
     <script>
-        fetch("http://localhost/api_productos.php")
+        // Función para agregar al carrito
+        function agregarAlCarrito(producto) {
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            carrito.push(producto);
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            alert('Producto agregado al carrito');
+        }
+    
+        // Cargar productos
+        fetch("http://localhost/productos.php")
             .then(res => res.json())
             .then(data => {
                 const contenedor = document.getElementById("contenedor-productos");
-
                 data.forEach(producto => {
                     const col = document.createElement("div");
                     col.className = "col-lg-4 col-md-6 col-sm-12 mb-4";
-
                     col.innerHTML = `
                         <div class="card h-100">
                             <img src="${producto.imagen_url}" class="card-img-top" alt="${producto.nombre}">
@@ -91,11 +97,12 @@
                                 <p class="card-text">${producto.description}</p>
                                 <p class="card-text"><strong>Precio:</strong> $${producto.precio}</p>
                                 <p class="card-text"><strong>Stock:</strong> ${producto.stock}</p>
-                                <a href="#" class="btn btn-primary">Comprar</a>
+                                <button onclick='agregarAlCarrito(${JSON.stringify(producto)})' class="btn btn-primary">
+                                    <i class="fas fa-cart-plus"></i> Comprar
+                                </button>
                             </div>
                         </div>
                     `;
-
                     contenedor.appendChild(col);
                 });
             })
@@ -104,5 +111,4 @@
             });
     </script>
 </body>
-
 </html>
