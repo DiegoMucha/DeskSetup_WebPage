@@ -127,6 +127,7 @@
             console.error('Error:', error);
             document.getElementById('reviews-container').innerHTML = '<p class="text-danger">Error al cargar las reseñas</p>';
         });
+
         function submitReview(event) {
             event.preventDefault();
             
@@ -137,34 +138,15 @@
                 comentario: document.getElementById('comentario').value
             };
 
-            // Debug: Log the data being sent
-            console.log('Sending data:', reviewData);
-
-            fetch('http://localhost/add_resena.php', {
+            fetch('http://40.118.212.141/crud_resenas.php?action=add', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Content-Type': 'application/json'
                 },
-                mode: 'cors', // Add this line
-                credentials: 'same-origin', // Add this line
                 body: JSON.stringify(reviewData)
             })
-            .then(response => {
-                // Debug: Log the raw response
-                console.log('Response status:', response.status);
-                return response.text().then(text => {
-                    console.log('Raw response:', text);
-                    try {
-                        return JSON.parse(text);
-                    } catch (e) {
-                        console.error('JSON parse error:', e);
-                        throw new Error('Invalid JSON response');
-                    }
-                });
-            })
+            .then(response => response.json())
             .then(data => {
-                console.log('Parsed response:', data); // Debug: Log parsed data
                 if (data.status === 'success') {
                     alert('¡Reseña agregada exitosamente!');
                     document.getElementById('reviewForm').reset();
@@ -174,7 +156,7 @@
                 }
             })
             .catch(error => {
-                console.error('Error details:', error);
+                console.error('Error:', error);
                 alert('Error al enviar la reseña');
             });
         }
