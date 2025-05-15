@@ -22,7 +22,7 @@
 
 <body>
     <!--Nav Bar-->
-    <iframe src="navbar.html" width="100%" height="56" style="border:none; position: fixed; top: 0; z-index: 1000;" scrolling="no"></iframe>
+    <iframe src="navbar.html" width="100%" height="56" style="border:none;" scrolling="no"></iframe>
 
     <!--Carrusel-->
     <div class="d-flex justify-content-center mt-2">
@@ -81,7 +81,7 @@
         }
     
         // Cargar productos
-        fetch("http://localhost/productos.php")
+        fetch("http://40.118.212.141/crud_productos.php?action=all")
             .then(res => res.json())
             .then(data => {
                 const contenedor = document.getElementById("contenedor-productos");

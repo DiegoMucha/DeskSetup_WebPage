@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Reseñas - DeskSetup Pro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style-footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .rating {
+            color: #ffc107;
+        }
+        .review-card {
+            transition: transform 0.2s;
+        }
+        .review-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <!--Nav Bar-->
+    <iframe src="navbar.html" width="100%" height="56" style="border:none; position: fixed; top: 0; z-index: 1000;" scrolling="no"></iframe>
+
+    <div class="container mt-5 pt-5">
+        <h1 class="text-center mb-5">Reseñas de Nuestros Clientes</h1>
+        
+        <div class="row" id="reviews-container">
+            <!-- Las reseñas se cargarán aquí dinámicamente -->
+        </div>
+    </div>
+    <!-- Add this after the reviews-container div and before the Footer -->
+    <div class="container mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title text-center mb-4">Agregar una Reseña</h3>
+                        <form id="reviewForm" onsubmit="submitReview(event)">
+                            <div class="mb-3">
+                                <label for="id_cliente" class="form-label">Código de Usuario</label>
+                                <input type="text" class="form-control" id="id_cliente" required 
+                                    placeholder="Ej: CLI0000001">
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_producto" class="form-label">Código de Producto</label>
+                                <input type="text" class="form-control" id="id_producto" required 
+                                    placeholder="Ej: PRO0000001">
+                            </div>
+                            <div class="mb-3">
+                                <label for="puntuacion" class="form-label">Puntuación</label>
+                                <select class="form-select" id="puntuacion" required>
+                                    <option value="">Selecciona una puntuación</option>
+                                    <option value="1">1 estrella</option>
+                                    <option value="2">2 estrellas</option>
+                                    <option value="3">3 estrellas</option>
+                                    <option value="4">4 estrellas</option>
+                                    <option value="5">5 estrellas</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="comentario" class="form-label">Comentario</label>
+                                <textarea class="form-control" id="comentario" rows="3" required 
+                                        placeholder="Escribe tu reseña aquí"></textarea>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Enviar Reseña</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <iframe src="footer.html" width="100%" height="130" style="border:none; overflow:hidden;"></iframe>
+
+    <script>
+        function displayStars(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rating) {
+                    stars += '<i class="fas fa-star"></i>';
+                } else {
+                    stars += '<i class="far fa-star"></i>';
+                }
+            }
+            return stars;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('es-ES', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // Cargar reseñas
+        fetch('http://40.118.212.141/crud_resenas.php?action=all')
+        .then(response => response.json())
+        .then(reviews => {
+            const container = document.getElementById('reviews-container');
+            if (!reviews || reviews.length === 0) {
+                container.innerHTML = '<p class="text-center">Aún no hay reseñas.</p>';
+                return;
+            }
+            reviews.forEach(review => {
+                const reviewCard = document.createElement('div');
+                reviewCard.className = 'col-md-6 col-lg-4 mb-4';
+                reviewCard.innerHTML = `
+                    <div class=\"card review-card h-100\">
+                        <div class=\"card-body\">
+                            <h5 class=\"card-title\">${review.producto_nombre}</h5>
+                            <div class=\"rating mb-2\">${displayStars(review.puntuacion)}</div>
+                            <p class=\"card-text\">${review.comentario}</p>
+                            <small class=\"text-muted\">Por: ${review.cliente_nombre} | ${formatDate(review.fecha_resena)}</small>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(reviewCard);
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('reviews-container').innerHTML = '<p class="text-danger">Error al cargar las reseñas</p>';
+        });
+        function submitReview(event) {
+            event.preventDefault();
+            
+            const reviewData = {
+                id_cliente: document.getElementById('id_cliente').value,
+                id_producto: document.getElementById('id_producto').value,
+                puntuacion: document.getElementById('puntuacion').value,
+                comentario: document.getElementById('comentario').value
+            };
+
+            // Debug: Log the data being sent
+            console.log('Sending data:', reviewData);
+
+            fetch('http://localhost/add_resena.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                mode: 'cors', // Add this line
+                credentials: 'same-origin', // Add this line
+                body: JSON.stringify(reviewData)
+            })
+            .then(response => {
+                // Debug: Log the raw response
+                console.log('Response status:', response.status);
+                return response.text().then(text => {
+                    console.log('Raw response:', text);
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        console.error('JSON parse error:', e);
+                        throw new Error('Invalid JSON response');
+                    }
+                });
+            })
+            .then(data => {
+                console.log('Parsed response:', data); // Debug: Log parsed data
+                if (data.status === 'success') {
+                    alert('¡Reseña agregada exitosamente!');
+                    document.getElementById('reviewForm').reset();
+                    location.reload();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error details:', error);
+                alert('Error al enviar la reseña');
+            });
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

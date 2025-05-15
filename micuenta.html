@@ -26,34 +26,82 @@
 
     <div class="container mt-5">
         <h1 class="text-center">Editar Mi Cuenta</h1>
-        <form action="edit_user.php" method="POST" class="mt-4">
-            <input type="hidden" name="id">
+        <form id="editUserForm" class="mt-4">
+            <input type="hidden" name="id" id="id">
             <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre y Apellido</label>
+                <label for="nombre" class="form-label">Nombre</label>
                 <input type="text" class="form-control" id="nombre" name="nombre" required>
             </div>
             <div class="mb-3">
-                <label for="usuario" class="form-label">Nombre de Usuario</label>
-                <input type="text" class="form-control" id="usuario" name="usuario" required>
+                <label for="apellido" class="form-label">Apellido</label>
+                <input type="text" class="form-control" id="apellido" name="apellido" required>
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" name="email" required>
             </div>
             <div class="mb-3">
+                <label for="telefono" class="form-label">Teléfono</label>
+                <input type="text" class="form-control" id="telefono" name="telefono" required>
+            </div>
+            <div class="mb-3">
                 <label for="direccion" class="form-label">Dirección</label>
                 <input type="text" class="form-control" id="direccion" name="direccion" required>
             </div>
-            <div class="mb-3">
-                <label for="telefono" class="form-label">Teléfono</label>
-                <input type="tel" class="form-control" id="telefono" name="telefono" required>
-            </div>
-            <div class="mb-3">
-                <label for="codigo_postal" class="form-label">Código Postal</label>
-                <input type="text" class="form-control" id="codigo_postal" name="codigo_postal" required>
-            </div>
             <button type="submit" class="btn btn-primary link-effect">Guardar Cambios</button>
         </form>
+        <div id="editMsg" class="mt-3"></div>
+        <script>
+        // Cargar datos actuales del usuario
+        document.addEventListener('DOMContentLoaded', function() {
+            const userData = JSON.parse(localStorage.getItem('user'));
+            if (!userData) {
+                window.location.href = 'login.html';
+                return;
+            }
+            document.getElementById('id').value = userData.id_cliente;
+            document.getElementById('nombre').value = userData.nombre;
+            document.getElementById('apellido').value = userData.apellido;
+            document.getElementById('email').value = userData.email || userData.correo_electronico;
+            document.getElementById('telefono').value = userData.telefono || '';
+            document.getElementById('direccion').value = userData.direccion || '';
+        });
+        document.getElementById('editUserForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const data = {
+                id_cliente: document.getElementById('id').value,
+                nombre: document.getElementById('nombre').value.trim(),
+                apellido: document.getElementById('apellido').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                telefono: document.getElementById('telefono').value.trim(),
+                direccion: document.getElementById('direccion').value.trim()
+            };
+            const msg = document.getElementById('editMsg');
+            msg.textContent = '';
+            fetch('http://40.118.212.141/crud_clientes.php?action=edit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    msg.innerHTML = '<span class="text-success">Datos actualizados correctamente.</span>';
+                    // Actualizar localStorage
+                    const userData = JSON.parse(localStorage.getItem('user'));
+                    userData.nombre = data.nombre;
+                    userData.apellido = data.apellido;
+                    userData.email = data.email;
+                    userData.telefono = data.telefono;
+                    userData.direccion = data.direccion;
+                    localStorage.setItem('user', JSON.stringify(userData));
+                } else {
+                    msg.innerHTML = '<span class="text-danger">Error al actualizar los datos.</span>';
+                }
+            })
+            .catch(() => msg.innerHTML = '<span class="text-danger">Error al conectar con el servidor.</span>');
+        });
+        </script>
     </div>
 
     <!-- FOOTER -->

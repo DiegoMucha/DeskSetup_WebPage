@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - DeskSetup Pro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style-footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .profile-section {
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .review-card {
+            transition: transform 0.2s;
+            border-left: 5px solid #007bff;
+        }
+        .review-card:hover {
+            transform: translateX(5px);
+        }
+        .rating {
+            color: #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <!-- Nav Bar -->
+    <iframe src="navbar.html" width="100%" height="85" style="border:none; overflow:hidden;"></iframe>
+
+    <div class="container mt-5 pt-5">
+        <!-- Información del Usuario -->
+        <div class="profile-section shadow-sm">
+            <h2 class="mb-4">Mi Perfil</h2>
+            <div class="row" id="user-info">
+                <!-- La información del usuario se cargará aquí -->
+            </div>
+        </div>
+
+        <!-- Reseñas del Usuario -->
+        <div class="profile-section shadow-sm">
+            <h3 class="mb-4">Mis Reseñas</h3>
+            <div class="row" id="user-reviews">
+                <!-- Las reseñas se cargarán aquí -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <iframe src="footer.html" width="100%" height="130" style="border:none;"></iframe>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function displayStars(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rating) {
+                    stars += '<i class="fas fa-star"></i>';
+                } else {
+                    stars += '<i class="far fa-star"></i>';
+                }
+            }
+            return stars;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('es-ES', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // Cargar datos del usuario y sus reseñas
+        document.addEventListener('DOMContentLoaded', function() {
+            const userData = JSON.parse(localStorage.getItem('user'));
+            if (!userData) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Mostrar información del usuario
+            const userInfoContainer = document.getElementById('user-info');
+            userInfoContainer.innerHTML = `
+                <div class="col-md-6 mb-3">
+                    <p><strong>ID Cliente:</strong> ${userData.id_cliente}</p>
+                    <p><strong>Nombre:</strong> ${userData.nombre} ${userData.apellido}</p>
+                    <p><strong>Email:</strong> ${userData.email || userData.correo_electronico}</p>
+                </div>
+            `;
+
+            // Cargar reseñas del usuario
+            fetch(`http://40.118.212.141/crud_resenas.php?action=user&id_cliente=${userData.id_cliente}`)
+                .then(response => response.json())
+                .then(reviews => {
+                    const reviewsContainer = document.getElementById('user-reviews');
+                    if (!reviews || reviews.length === 0) {
+                        reviewsContainer.innerHTML = '<p>Aún no has realizado ninguna reseña.</p>';
+                        return;
+                    }
+
+                    reviews.forEach(review => {
+                        const reviewCard = document.createElement('div');
+                        reviewCard.className = 'col-12 mb-3';
+                        reviewCard.innerHTML = `
+                            <div class="card review-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">${review.producto_nombre}</h5>
+                                    <div class="rating mb-2">
+                                        ${displayStars(review.puntuacion)}
+                                    </div>
+                                    <p class="card-text">${review.comentario}</p>
+                                    <small class="text-muted">Fecha: ${formatDate(review.fecha_resena)}</small>
+                                </div>
+                            </div>
+                        `;
+                        reviewsContainer.appendChild(reviewCard);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('user-reviews').innerHTML =
+                        '<p class="text-danger">Error al cargar las reseñas</p>';
+                });
+        });
+    </script>
+</body>
+</html>
