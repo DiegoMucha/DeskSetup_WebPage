@@ -101,7 +101,7 @@
         }
 
         // Cargar reseñas
-        fetch('http://40.118.212.141/get_resenas.php')
+        fetch('http://40.118.212.141/crud_resenas.php?action=all')
         .then(response => response.json())
         .then(reviews => {
             const container = document.getElementById('reviews-container');
@@ -148,7 +148,7 @@
             // Debug: Log the data being sent
             console.log('Sending data:', reviewData);
 
-            fetch('http://localhost/add_resena.php', {
+            fetch('http://40.118.212.141/crud_resenas.php?action=add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

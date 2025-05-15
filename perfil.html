@@ -93,7 +93,7 @@
             `;
 
             // Cargar reseñas del usuario
-            fetch(`http://localhost/perfil.php?id_cliente=${userData.id_cliente}`)
+            fetch(`http://40.118.212.141/crud_resenas.php?action=user&id_cliente=${userData.id_cliente}`)
                 .then(response => response.json())
                 .then(reviews => {
                     const reviewsContainer = document.getElementById('user-reviews');

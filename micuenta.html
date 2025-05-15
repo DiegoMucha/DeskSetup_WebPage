@@ -26,8 +26,8 @@
 
     <div class="container mt-5">
         <h1 class="text-center">Editar Mi Cuenta</h1>
-        <form action="edit_user.php" method="POST" class="mt-4">
-            <input type="hidden" name="id">
+        <form id="editUserForm" class="mt-4">
+            <input type="hidden" name="id" id="id">
             <div class="mb-3">
                 <label for="nombre" class="form-label">Nombre y Apellido</label>
                 <input type="text" class="form-control" id="nombre" name="nombre" required>
@@ -54,6 +54,34 @@
             </div>
             <button type="submit" class="btn btn-primary link-effect">Guardar Cambios</button>
         </form>
+        <script>
+        document.getElementById('editUserForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const data = {
+                id: document.getElementById('id').value,
+                nombre: document.getElementById('nombre').value,
+                usuario: document.getElementById('usuario').value,
+                email: document.getElementById('email').value,
+                direccion: document.getElementById('direccion').value,
+                telefono: document.getElementById('telefono').value,
+                codigo_postal: document.getElementById('codigo_postal').value
+            };
+            fetch('http://40.118.212.141/crud_clientes.php?action=edit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if(result.success) {
+                    alert('Usuario actualizado exitosamente.');
+                } else {
+                    alert('Error al actualizar el usuario.');
+                }
+            })
+            .catch(() => alert('Error al conectar con el servidor.'));
+        });
+        </script>
     </div>
 
     <!-- FOOTER -->

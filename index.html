@@ -81,7 +81,7 @@
         }
     
         // Cargar productos
-        fetch("http://40.118.212.141/productos.php")
+        fetch("http://40.118.212.141/crud_productos.php?action=all")
             .then(res => res.json())
             .then(data => {
                 const contenedor = document.getElementById("contenedor-productos");
