@@ -11,7 +11,7 @@
 </head>
 <body>
     <!-- Nav Bar -->
-    <iframe src="navbar.html" width="100%" height="85" style="border:none; overflow:hidden;"></iframe>
+    <iframe src="navbar.html" width="100%" height="100%" style="border:none; overflow:hidden;"></iframe>
 
     <div class="container mt-5 pt-5">
         <div class="row justify-content-center">
@@ -55,7 +55,7 @@
     </div>
 
     <!-- Footer -->
-    <iframe src="navbar.html" width="100%" height="100%" style="border:none;" scrolling="no"></iframe>
+    <iframe src="footer.html" width="100%" height="100%" style="border:none;" scrolling="no"></iframe>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -81,8 +81,7 @@
             
             const loginData = {
                 usuario: document.getElementById('usuario').value,
-                password: document.getElementById('password').value,
-                recordar: document.getElementById('recordar').checked
+                password: document.getElementById('password').value
             };
 
             fetch('http://40.118.212.141/crud_clientes.php?action=login', {
@@ -96,7 +95,7 @@
             .then(data => {
                 if (data.status === 'success') {
                     localStorage.setItem('user', JSON.stringify(data.user));
-                    window.location.href = 'perfil.html';
+                    window.location.href = 'micuenta.html';
                 } else {
                     alert(data.message || 'Error al iniciar sesión');
                 }

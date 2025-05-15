@@ -9,7 +9,43 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
-    <iframe src="navbar.html" width="100%" height="100%" style="border:none;" scrolling="no"></iframe>
+    <!--Nav Bar-->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a href="./index.html" target="_top">
+                <img src="images/icons/ds.e931c4593e6d86f4aa7c.png" alt="Logo" class="rounded" width="70" height="65">
+            </a>
+            <ul class="navbar-nav ms-3 mb-2 mb-lg-0 flex-row align-items-center">
+                <li class="nav-item ms-3">
+                    <a class="nav-link" href="./productos.html" target="_top">Productos</a>
+                </li>
+                <li class="nav-item ms-3">
+                    <a class="nav-link" href="./resenas.html" target="_top">Reseñas</a>
+                </li>
+                <li class="nav-item ms-3">
+                    <a class="nav-link" href="./carrito.html" target="_top">Carrito</a>
+                </li>
+            </ul>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="#navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="./login.html" target="_top">Ingresar</a></li>
+                            <li><a class="dropdown-item" href="./micuenta.html" target="_top">Mi Cuenta</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="container mt-5 pt-5">
         <h1 class="text-center mb-5">Todos los Productos</h1>
         <div class="row" id="contenedor-productos"></div>
