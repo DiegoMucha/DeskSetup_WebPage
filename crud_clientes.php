@@ -20,6 +20,7 @@ try {
     if ($method === 'POST' && $action === 'register') {
         // CREATE cliente (de registro.php)
         $data = json_decode(file_get_contents("php://input"));
+        error_log('Datos recibidos: ' . json_encode($data));
         if (!isset($data->nombre) || !isset($data->apellido) || 
             !isset($data->email) || !isset($data->password) || 
             !isset($data->telefono) || !isset($data->direccion)) {
@@ -53,6 +54,7 @@ try {
     } else if ($method === 'POST' && $action === 'login') {
         // LOGIN cliente (de login.php)
         $data = json_decode(file_get_contents("php://input"));
+        error_log('Datos recibidos: ' . json_encode($data));
         if (!isset($data->usuario) || !isset($data->password)) {
             throw new Exception("Datos incompletos");
         }
@@ -78,11 +80,21 @@ try {
     } else if ($method === 'POST' && $action === 'edit') {
         // UPDATE cliente (de edit_user.php)
         $data = json_decode(file_get_contents("php://input"));
-        if (!isset($data->id) || !isset($data->nombre) || !isset($data->usuario) || !isset($data->email) || !isset($data->direccion) || !isset($data->telefono) || !isset($data->codigo_postal)) {
+        error_log('Datos recibidos para editar: ' . json_encode($data));
+
+        if (!isset($data->id_cliente) || !isset($data->nombre) || !isset($data->apellido) || !isset($data->email) || !isset($data->direccion) || !isset($data->telefono) || !isset($data->password)) {
+            error_log('Error: Datos incompletos');
             throw new Exception("Datos incompletos");
         }
-        $query = "UPDATE usuarios SET nombre = $1, usuario = $2, email = $3, direccion = $4, telefono = $5, codigo_postal = $6 WHERE id = $7";
-        $result = pg_query_params($conn, $query, array($data->nombre, $data->usuario, $data->email, $data->direccion, $data->telefono, $data->codigo_postal, $data->id));
+
+        $query = "UPDATE clientes SET nombre = $1, apellido = $2, correo_electronico = $3, direccion = $4, telefono = $5, contraseña = $6 WHERE id_cliente = $7";
+        $result = pg_query_params($conn, $query, array($data->nombre, $data->apellido, $data->email, $data->direccion, $data->telefono, $data->password, $data->id_cliente));
+
+        if (!$result) {
+            error_log('Error en la consulta SQL: ' . pg_last_error($conn));
+            throw new Exception('Error al ejecutar la consulta SQL.');
+        }
+
         if ($result) {
             echo json_encode(['success' => true, 'message' => 'Usuario actualizado exitosamente.']);
         } else {

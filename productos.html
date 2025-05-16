@@ -46,9 +46,24 @@
             </div>
         </div>
     </nav>
-    <div class="container mt-5 pt-5">
+    <div class="container mt-5">
         <h1 class="text-center mb-5">Todos los Productos</h1>
-        <div class="row" id="contenedor-productos"></div>
+
+        <!-- Filtros -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <label for="filtro-precio" class="form-label">Filtrar por precio máximo:</label>
+                <input type="number" id="filtro-precio" class="form-control" placeholder="Ejemplo: 1000">
+            </div>
+            <div class="col-md-6">
+                <label for="filtro-stock" class="form-label">Filtrar por stock mínimo:</label>
+                <input type="number" id="filtro-stock" class="form-control" placeholder="Ejemplo: 10">
+            </div>
+        </div>
+
+        <div class="row" id="contenedor-productos">
+            <!-- Productos cargados dinámicamente -->
+        </div>
     </div>
     <iframe src="footer.html" width="100%" height="130" style="border:none; overflow:hidden;"></iframe>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -60,39 +75,65 @@
             localStorage.setItem('carrito', JSON.stringify(carrito));
             alert('Producto agregado al carrito');
         }
-        fetch("http://40.118.212.141/crud_productos.php?action=all")
-            .then(res => res.json())
-            .then(data => {
-                const contenedor = document.getElementById("contenedor-productos");
-                contenedor.innerHTML = '';
-                if (!data || data.length === 0) {
-                    contenedor.innerHTML = '<p class="text-center text-danger">No hay productos disponibles.</p>';
-                    return;
-                }
-                data.forEach(producto => {
-                    const col = document.createElement("div");
-                    col.className = "col-lg-4 col-md-6 col-sm-12 mb-4";
-                    col.innerHTML = `
-                        <div class=\"card h-100\">
-                            <img src=\"${producto.imagen_url || 'images/SLIDE/setup1.jpg'}\" class=\"card-img-top\" alt=\"${producto.nombre}\">
-                            <div class=\"card-body\">
-                                <h5 class=\"card-title\">${producto.nombre}</h5>
-                                <p class=\"card-text\"><strong>Marca:</strong> ${producto.marca || ''}</p>
-                                <p class=\"card-text\">${producto.descripcion || ''}</p>
-                                <p class=\"card-text\"><strong>Precio:</strong> $${producto.precio}</p>
-                                <p class=\"card-text\"><strong>Stock:</strong> ${producto.stock}</p>
-                                <button onclick='agregarAlCarrito(${JSON.stringify(producto)})' class=\"btn btn-primary\">
-                                    <i class=\"fas fa-cart-plus\"></i> Comprar
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                    contenedor.appendChild(col);
+
+        function cargarProductos() {
+            fetch("http://40.118.212.141/crud_productos.php?action=all")
+                .then(res => res.json())
+                .then(data => {
+                    mostrarProductos(data);
+
+                    // Agregar eventos a los filtros
+                    document.getElementById('filtro-precio').addEventListener('input', () => filtrarProductos(data));
+                    document.getElementById('filtro-stock').addEventListener('input', () => filtrarProductos(data));
+                })
+                .catch(err => {
+                    document.getElementById("contenedor-productos").innerHTML = '<p class="text-danger">No se pudieron cargar los productos.</p>';
                 });
-            })
-            .catch(err => {
-                document.getElementById("contenedor-productos").innerHTML = '<p class="text-danger">No se pudieron cargar los productos.</p>';
+        }
+
+        function mostrarProductos(productos) {
+            const contenedor = document.getElementById("contenedor-productos");
+            contenedor.innerHTML = '';
+
+            if (!productos || productos.length === 0) {
+                contenedor.innerHTML = '<p class="text-center text-danger">No hay productos disponibles.</p>';
+                return;
+            }
+
+            productos.forEach(producto => {
+                const col = document.createElement("div");
+                col.className = "col-lg-4 col-md-6 col-sm-12 mb-4";
+                col.innerHTML = `
+                    <div class=\"card h-100\">
+                        <img src=\"${producto.imagen_url || 'images/SLIDE/setup1.jpg'}\" class=\"card-img-top\" alt=\"${producto.nombre}\">
+                        <div class=\"card-body\">
+                            <h5 class=\"card-title\">${producto.nombre}</h5>
+                            <p class=\"card-text\"><strong>Marca:</strong> ${producto.marca || ''}</p>
+                            <p class=\"card-text\">${producto.descripcion || ''}</p>
+                            <p class=\"card-text\"><strong>Precio:</strong> $${producto.precio}</p>
+                            <p class=\"card-text\"><strong>Stock:</strong> ${producto.stock}</p>
+                            <button onclick='agregarAlCarrito(${JSON.stringify(producto)})' class=\"btn btn-primary\">
+                                <i class=\"fas fa-cart-plus\"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                `;
+                contenedor.appendChild(col);
             });
+        }
+
+        function filtrarProductos(productos) {
+            const precioMax = parseFloat(document.getElementById('filtro-precio').value) || Infinity;
+            const stockMin = parseInt(document.getElementById('filtro-stock').value) || 0;
+
+            const productosFiltrados = productos.filter(producto => 
+                producto.precio <= precioMax && producto.stock >= stockMin
+            );
+
+            mostrarProductos(productosFiltrados);
+        }
+
+        document.addEventListener('DOMContentLoaded', cargarProductos);
     </script>
 </body>
 </html>
